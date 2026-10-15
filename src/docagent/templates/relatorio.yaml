@@ -1,0 +1,64 @@
+id: relatorio
+nome: Relatório
+icone: "📊"
+ordem: 2
+categoria: Gestão
+descricao: Relatório gerencial, de atividades ou de resultados, com resumo executivo, análise e recomendações.
+tom_padrao: formal
+campos:
+  - id: tipo_relatorio
+    rotulo: Tipo de relatório
+    tipo: selecao
+    opcoes: [Relatório de atividades, Relatório de resultados / indicadores, Relatório de projeto, Relatório de incidente, Outro]
+    padrao: Relatório de atividades
+  - id: titulo
+    rotulo: Título
+    tipo: texto
+    obrigatorio: true
+    exemplo: Relatório de Captação de Doadores – 3º trimestre
+  - id: periodo
+    rotulo: Período de referência
+    tipo: texto
+    exemplo: Julho a setembro de 2026
+  - id: publico
+    rotulo: Para quem é o relatório
+    tipo: texto
+    exemplo: Diretoria e conselho fiscal
+  - id: objetivo
+    rotulo: Objetivo do relatório
+    tipo: texto_longo
+    exemplo: Apresentar a evolução das doações mensais e propor ações para o próximo trimestre.
+  - id: dados
+    rotulo: Dados, números e fatos
+    tipo: texto_longo
+    obrigatorio: true
+    ajuda: Cole números, tabelas simples (separadas por ; ou tab), anotações. O agente organiza.
+    exemplo: |
+      Julho: 412 doadores ativos, R$ 18.300
+      Agosto: 430 doadores, R$ 19.100
+      Setembro: 455 doadores, R$ 20.450
+      Taxa de cancelamento caiu de 6% para 4%
+  - id: destaques
+    rotulo: Destaques, problemas e observações
+    tipo: texto_longo
+  - id: autor
+    rotulo: Elaborado por
+    tipo: texto
+estrutura:
+  - Identificação (período, público, autor, data)
+  - Resumo executivo
+  - Objetivo
+  - Contexto / metodologia
+  - Resultados (com tabela quando houver números)
+  - Análise
+  - Pontos de atenção
+  - Recomendações e próximos passos
+  - Conclusão
+instrucoes: |
+  - Comece com um Resumo executivo de 3 a 5 linhas que um diretor leia em 30 segundos.
+  - Sempre que houver números comparáveis, monte uma tabela (bloco 'tabela') e
+    calcule variações (absolutas e percentuais) com cuidado; não invente dados.
+  - Na análise, explique o "porquê" dos números, separando fatos de hipóteses.
+  - Recomendações devem ser acionáveis: o quê, quem e quando (use lista numerada).
+  - Use um bloco 'destaque' para o principal alerta ou conquista do período.
+  - Se faltar algum dado relevante para concluir, registre em 'pendencias'.

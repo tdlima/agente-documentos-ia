@@ -1,0 +1,44 @@
+[project]
+name = "docagent"
+version = "1.0.0"
+description = "Agente de IA (Claude) que redige documentos empresariais — ofícios, relatórios, PDIs, roteiros de entrevista e mais — e exporta em Word, PDF e Markdown."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "JL · Inteligência Aplicada", email = "tdlima.ti@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=1.14",
+    "pydantic>=2.7",
+    "python-docx>=1.1",
+    "reportlab>=4.0",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0",
+    "streamlit>=1.50",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+docagent = ["templates/*.yaml"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "N"]
+# N802/N806: nomes do OOXML (pPr, trPr); N813/N818: nomes em português; B905: zip curto é intencional
+ignore = ["N802", "N806", "N813", "N818", "B905"]

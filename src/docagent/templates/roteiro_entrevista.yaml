@@ -1,0 +1,62 @@
+id: roteiro_entrevista
+nome: Roteiro de Entrevista
+icone: "🗣️"
+ordem: 4
+categoria: Pessoas / RH
+descricao: Roteiro estruturado para entrevista de seleção, com perguntas comportamentais (STAR), técnicas e grade de avaliação.
+tom_padrao: profissional
+campos:
+  - id: vaga
+    rotulo: Vaga
+    tipo: texto
+    obrigatorio: true
+    exemplo: Assistente administrativo
+  - id: area
+    rotulo: Área / setor
+    tipo: texto
+  - id: nivel
+    rotulo: Nível
+    tipo: selecao
+    opcoes: [Estágio, Júnior, Pleno, Sênior, Liderança]
+    padrao: Júnior
+  - id: atividades
+    rotulo: Principais atividades da vaga
+    tipo: texto_longo
+    obrigatorio: true
+  - id: competencias
+    rotulo: Competências avaliadas
+    tipo: lista
+    ajuda: Uma por linha (técnicas e comportamentais).
+    exemplo: |
+      Organização
+      Comunicação
+      Excel intermediário
+  - id: duracao
+    rotulo: Duração da entrevista (minutos)
+    tipo: numero
+    padrao: "45"
+  - id: valores
+    rotulo: Valores / cultura da organização
+    tipo: texto_longo
+estrutura:
+  - Identificação (vaga, nível, duração, entrevistador, data)
+  - Objetivo da entrevista
+  - Abertura e quebra-gelo (com tempo estimado)
+  - Apresentação da vaga e da organização
+  - Perguntas comportamentais (método STAR) por competência
+  - Perguntas técnicas / situacionais
+  - Perguntas sobre motivação e alinhamento cultural
+  - Espaço para perguntas do candidato
+  - Encerramento e próximos passos
+  - Grade de avaliação (tabela com escala 1 a 5)
+  - Cuidados legais e boas práticas
+instrucoes: |
+  - Distribua o tempo total entre as etapas e indique o tempo de cada uma no título da seção.
+  - Para cada competência, crie de 1 a 2 perguntas comportamentais no formato STAR
+    ("Conte sobre uma situação em que...") e diga o que observar numa boa resposta.
+  - Adeque a complexidade ao nível da vaga.
+  - Grade de avaliação em tabela: Competência | Peso | Nota (1-5) | Evidências observadas.
+  - Inclua uma seção de cuidados legais: não perguntar sobre estado civil, filhos,
+    gravidez, religião, orientação sexual, idade, saúde ou outras questões
+    discriminatórias (Lei 9.029/1995 e boas práticas de diversidade).
+  - Linguagem neutra e inclusiva.

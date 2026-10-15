@@ -1,0 +1,55 @@
+id: ata_reuniao
+nome: Ata de Reunião
+icone: "📝"
+ordem: 6
+categoria: Administrativo
+descricao: Registro formal de reunião com participantes, pauta, deliberações e plano de ação com responsáveis.
+tom_padrao: formal e objetivo
+campos:
+  - id: tipo_reuniao
+    rotulo: Tipo de reunião
+    tipo: texto
+    exemplo: Reunião ordinária da diretoria
+  - id: data_hora
+    rotulo: Data e horário
+    tipo: texto
+    obrigatorio: true
+    exemplo: 14/10/2026, das 14h às 15h30
+  - id: local
+    rotulo: Local
+    tipo: texto
+    exemplo: Sala de reuniões / Google Meet
+  - id: participantes
+    rotulo: Participantes
+    tipo: lista
+    obrigatorio: true
+    ajuda: Um por linha, com cargo se possível.
+  - id: pauta
+    rotulo: Pauta
+    tipo: lista
+  - id: anotacoes
+    rotulo: Anotações da reunião
+    tipo: texto_longo
+    obrigatorio: true
+    ajuda: Pode colar anotações soltas ou a transcrição; o agente organiza.
+  - id: secretario
+    rotulo: Quem redigiu a ata
+    tipo: texto
+estrutura:
+  - Identificação (tipo, data, horário, local)
+  - Participantes
+  - Pauta
+  - Discussões por item de pauta
+  - Deliberações / decisões
+  - Plano de ação (tabela)
+  - Encerramento
+  - Assinaturas
+instrucoes: |
+  - Registre de forma impessoal e no pretérito ("Foi apresentado...", "Ficou decidido...").
+  - Organize as discussões por item de pauta; se não houver pauta, deduza os temas das anotações.
+  - Separe claramente discussões de decisões.
+  - Plano de ação em tabela: Ação | Responsável | Prazo. Se um responsável ou prazo
+    não estiver nas anotações, escreva "A definir" e registre em 'pendencias'.
+  - Encerramento: "Nada mais havendo a tratar, a reunião foi encerrada às HH:MM, e eu,
+    [secretário], lavrei a presente ata..." quando houver dados para isso.
+  - Inclua blocos de assinatura para quem redigiu e para quem presidiu, se conhecido.

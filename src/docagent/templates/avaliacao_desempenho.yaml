@@ -1,0 +1,63 @@
+id: avaliacao_desempenho
+nome: Avaliação de Desempenho
+icone: "⭐"
+ordem: 5
+categoria: Pessoas / RH
+descricao: Avaliação estruturada por competências e metas, com feedback no modelo SCI (Situação, Comportamento, Impacto) e próximos passos.
+tom_padrao: profissional, respeitoso e construtivo
+campos:
+  - id: colaborador
+    rotulo: Nome do colaborador
+    tipo: texto
+    obrigatorio: true
+  - id: cargo
+    rotulo: Cargo
+    tipo: texto
+    obrigatorio: true
+  - id: avaliador
+    rotulo: Avaliador
+    tipo: texto
+  - id: periodo
+    rotulo: Período avaliado
+    tipo: texto
+    exemplo: 1º semestre de 2026
+  - id: metas
+    rotulo: Metas do período e resultado
+    tipo: texto_longo
+    ajuda: "Ex.: Meta: 40 novos doadores/mês — Resultado: média de 46"
+  - id: competencias
+    rotulo: Competências e notas (1 a 5)
+    tipo: texto_longo
+    obrigatorio: true
+    exemplo: |
+      Comunicação: 5
+      Trabalho em equipe: 4
+      Organização: 3
+  - id: exemplos
+    rotulo: Fatos e exemplos observados
+    tipo: texto_longo
+    ajuda: Situações concretas que sustentam as notas.
+  - id: autoavaliacao
+    rotulo: Comentários da autoavaliação (opcional)
+    tipo: texto_longo
+estrutura:
+  - Identificação (colaborador, cargo, avaliador, período, data)
+  - Resumo geral do desempenho
+  - Avaliação de metas (tabela)
+  - Avaliação de competências (tabela)
+  - Feedback – pontos fortes
+  - Feedback – oportunidades de desenvolvimento
+  - Conceito final
+  - Próximos passos / recomendações para PDI
+  - Assinaturas
+instrucoes: |
+  - Tabela de metas: Meta | Resultado | Atingimento (%) | Comentário. Calcule o
+    percentual quando os números permitirem.
+  - Tabela de competências: Competência | Nota (1-5) | Evidência.
+  - Calcule a média das notas e informe o conceito final com a escala:
+    1 Insatisfatório · 2 Abaixo do esperado · 3 Dentro do esperado ·
+    4 Acima do esperado · 5 Excepcional.
+  - Escreva o feedback no modelo SCI (Situação, Comportamento, Impacto), baseado em fatos,
+    sem julgamentos pessoais nem comparações com colegas.
+  - Considere a autoavaliação quando houver, apontando convergências e divergências.
+  - Termine com recomendações que possam alimentar um PDI e assinaturas de avaliador e avaliado.

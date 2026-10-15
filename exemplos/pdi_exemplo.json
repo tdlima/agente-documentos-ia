@@ -1,0 +1,45 @@
+{
+  "titulo": "Plano de Desenvolvimento Individual (PDI)",
+  "subtitulo": "Desenvolvimento para a função de supervisão de equipe",
+  "metadados": [
+    {"rotulo": "Colaboradora", "valor": "Ana Paula Ribeiro"},
+    {"rotulo": "Cargo atual", "valor": "Operadora de telemarketing"},
+    {"rotulo": "Gestor responsável", "valor": "Carlos Mendes"},
+    {"rotulo": "Vigência", "valor": "Outubro de 2026 a março de 2027 (6 meses)"},
+    {"rotulo": "Data", "valor": "15 de outubro de 2026"}
+  ],
+  "blocos": [
+    {"tipo": "titulo", "texto": "Objetivo de desenvolvimento", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "paragrafo", "texto": "Preparar Ana Paula para assumir a **supervisão da equipe de telemarketing** em até 12 meses, fortalecendo competências de organização, análise de dados em planilhas e liderança de pares, a partir dos pontos fortes que já demonstra no relacionamento com doadores.", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "titulo", "texto": "Diagnóstico", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "tabela", "texto": "", "itens": [], "colunas": ["Pontos fortes", "Competências a desenvolver"], "linhas": [
+      ["Empatia e escuta ativa com doadores", "Organização da rotina e priorização"],
+      ["Pontualidade e assiduidade", "Uso de planilhas (Excel intermediário)"],
+      ["Boa argumentação em ligações de retenção", "Liderança e feedback para colegas"]
+    ]},
+    {"tipo": "titulo", "texto": "Objetivos SMART", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "lista_numerada", "texto": "", "itens": [
+      "Organizar a própria rotina com agenda semanal de ligações e reduzir retornos atrasados a zero até dezembro de 2026.",
+      "Concluir curso de Excel intermediário e entregar, até janeiro de 2027, um painel mensal de doações da equipe.",
+      "Conduzir 4 reuniões semanais de alinhamento da equipe com o apoio do gestor até março de 2027."
+    ], "colunas": [], "linhas": []},
+    {"tipo": "titulo", "texto": "Plano de ação", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "tabela", "texto": "", "itens": [], "colunas": ["Objetivo", "Ação", "Tipo", "Prazo", "Evidência"], "linhas": [
+      ["1", "Montar agenda semanal de retornos no CRM", "70", "31/10/2026", "Agenda ativa e zero retornos atrasados"],
+      ["2", "Curso online de Excel intermediário", "10", "30/11/2026", "Certificado de conclusão"],
+      ["2", "Construir painel de doações com o analista de dados", "20", "31/01/2027", "Painel apresentado à diretoria"],
+      ["3", "Acompanhar o supervisor em 4 reuniões e depois conduzir", "70", "31/03/2027", "Pautas e atas das reuniões"],
+      ["3", "Mentoria quinzenal sobre feedback com o gestor", "20", "Contínuo", "Registro das mentorias"]
+    ]},
+    {"tipo": "destaque", "texto": "Modelo **70-20-10**: 70% aprendizado na prática, 20% com outras pessoas (mentoria e feedback) e 10% em formação estruturada.", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "titulo", "texto": "Agenda de acompanhamento", "itens": [], "colunas": [], "linhas": []},
+    {"tipo": "lista", "texto": "", "itens": [
+      "**30 dias** — revisão da agenda de retornos e matrícula no curso.",
+      "**90 dias** — certificado do curso e primeira versão do painel.",
+      "**180 dias** — avaliação final do plano e definição dos próximos passos."
+    ], "colunas": [], "linhas": []},
+    {"tipo": "assinatura", "texto": "Ana Paula Ribeiro", "itens": ["Colaboradora"], "colunas": [], "linhas": []},
+    {"tipo": "assinatura", "texto": "Carlos Mendes", "itens": ["Gestor responsável"], "colunas": [], "linhas": []}
+  ],
+  "pendencias": ["Confirmar o orçamento disponível para o curso de Excel."]
+}

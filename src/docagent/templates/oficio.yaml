@@ -1,0 +1,74 @@
+id: oficio
+nome: Ofício
+icone: "✉️"
+ordem: 1
+categoria: Administrativo
+descricao: Comunicação oficial com órgãos públicos, parceiros ou outras instituições, no padrão do Manual de Redação da Presidência da República.
+tom_padrao: formal
+campos:
+  - id: numero
+    rotulo: Número do ofício
+    tipo: texto
+    exemplo: "045/2026/ADM"
+    ajuda: Formato sugerido número/ano/sigla do setor.
+  - id: destinatario_nome
+    rotulo: Nome do destinatário
+    tipo: texto
+    obrigatorio: true
+    exemplo: Maria Souza
+  - id: destinatario_cargo
+    rotulo: Cargo do destinatário
+    tipo: texto
+    exemplo: Secretária Municipal de Desenvolvimento Social
+  - id: destinatario_orgao
+    rotulo: Órgão / empresa do destinatário
+    tipo: texto
+    obrigatorio: true
+    exemplo: Prefeitura Municipal de Montes Claros
+  - id: destinatario_endereco
+    rotulo: Endereço do destinatário
+    tipo: texto
+  - id: hierarquia
+    rotulo: Relação com o destinatário
+    tipo: selecao
+    opcoes: [Mesma hierarquia ou inferior, Autoridade superior]
+    padrao: Mesma hierarquia ou inferior
+    ajuda: Define o fecho (Atenciosamente / Respeitosamente).
+  - id: assunto
+    rotulo: Assunto
+    tipo: texto
+    obrigatorio: true
+    exemplo: Solicitação de cessão de espaço para evento beneficente
+  - id: conteudo
+    rotulo: O que precisa ser comunicado
+    tipo: texto_longo
+    obrigatorio: true
+    ajuda: Escreva em tópicos ou de forma livre; o agente redige no padrão oficial.
+    exemplo: Pedir o ginásio municipal no dia 20/11 das 8h às 17h para bazar beneficente. Público esperado 300 pessoas. Nós cuidamos da limpeza e segurança.
+  - id: anexos
+    rotulo: Anexos
+    tipo: lista
+    ajuda: Um por linha.
+estrutura:
+  - Cabeçalho (número do ofício, local e data)
+  - Destinatário (nome, cargo, órgão, endereço)
+  - Assunto
+  - Vocativo
+  - Introdução (apresentação do objetivo)
+  - Desenvolvimento (detalhamento)
+  - Conclusão (pedido / reafirmação)
+  - Fecho
+  - Assinatura
+  - Anexos (se houver)
+instrucoes: |
+  Siga o padrão ofício do Manual de Redação da Presidência da República (3ª ed.):
+  - Coloque número do ofício e "Cidade, DD de mês de AAAA." nos metadados.
+  - O destinatário vai nos metadados (Destinatário, Cargo, Órgão, Endereço quando houver).
+  - Vocativo: "Senhor(a) + cargo," (ex.: "Senhora Secretária,"). Use o tratamento
+    adequado ao cargo sem usar "Digníssimo" ou "Ilustríssimo".
+  - Parágrafos curtos, claros e impessoais; sem jargões. Um parágrafo por ideia.
+  - Fecho: "Atenciosamente," para mesma hierarquia ou inferior;
+    "Respeitosamente," para autoridade superior.
+  - Termine com um bloco de assinatura (nome e cargo do responsável da organização).
+  - Se houver anexos, inclua uma seção "Anexos" com lista.
+  - Não use subtítulos dentro do corpo do ofício; o texto é corrido.

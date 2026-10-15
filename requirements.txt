@@ -1,0 +1,7 @@
+anthropic>=1.14
+pydantic>=2.7
+python-docx>=1.1
+reportlab>=4.0
+PyYAML>=6.0
+python-dotenv>=1.0
+streamlit>=1.50

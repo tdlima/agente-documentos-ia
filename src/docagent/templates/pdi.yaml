@@ -1,0 +1,59 @@
+id: pdi
+nome: PDI – Plano de Desenvolvimento Individual
+icone: "🎯"
+ordem: 3
+categoria: Pessoas / RH
+descricao: Plano de desenvolvimento com objetivos SMART, ações no modelo 70-20-10, prazos e indicadores de acompanhamento.
+tom_padrao: profissional e encorajador
+campos:
+  - id: colaborador
+    rotulo: Nome do colaborador
+    tipo: texto
+    obrigatorio: true
+  - id: cargo
+    rotulo: Cargo atual
+    tipo: texto
+    obrigatorio: true
+    exemplo: Operadora de telemarketing
+  - id: gestor
+    rotulo: Gestor responsável
+    tipo: texto
+  - id: periodo
+    rotulo: Vigência do plano
+    tipo: texto
+    padrao: 6 meses
+  - id: objetivo_carreira
+    rotulo: Objetivo de carreira / aspiração
+    tipo: texto_longo
+    exemplo: Tornar-se supervisora de equipe em até 1 ano.
+  - id: pontos_fortes
+    rotulo: Pontos fortes
+    tipo: texto_longo
+    exemplo: Empatia com doadores, pontualidade, boa argumentação.
+  - id: pontos_desenvolver
+    rotulo: Competências a desenvolver
+    tipo: texto_longo
+    obrigatorio: true
+    exemplo: Organização de rotina, uso de planilhas, liderança de pares.
+  - id: recursos
+    rotulo: Recursos disponíveis (cursos, orçamento, mentores)
+    tipo: texto_longo
+estrutura:
+  - Identificação (colaborador, cargo, gestor, vigência, data)
+  - Objetivo de desenvolvimento
+  - Diagnóstico (pontos fortes e competências a desenvolver)
+  - Objetivos SMART
+  - Plano de ação (tabela)
+  - Indicadores de acompanhamento
+  - Agenda de acompanhamento (checkpoints)
+  - Compromissos e assinaturas
+instrucoes: |
+  - Escreva de 2 a 4 objetivos SMART (específicos, mensuráveis, atingíveis,
+    relevantes e com prazo), ligados às competências a desenvolver.
+  - Plano de ação em tabela com colunas: Objetivo | Ação | Tipo (70/20/10) | Prazo | Evidência de conclusão.
+    70 = aprendizado na prática, 20 = com outras pessoas (mentoria, feedback), 10 = formal (cursos).
+    Equilibre os três tipos.
+  - Use prazos coerentes com a vigência informada.
+  - Agenda de acompanhamento com checkpoints (ex.: 30, 60, 90 dias) em lista.
+  - Tom encorajador e focado em desenvolvimento, nunca punitivo.
+  - Finalize com blocos de assinatura do colaborador e do gestor.

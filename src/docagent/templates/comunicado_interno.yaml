@@ -1,0 +1,53 @@
+id: comunicado_interno
+nome: Comunicado Interno
+icone: "📢"
+ordem: 7
+categoria: Comunicação
+descricao: Aviso ou memorando para equipes, claro e direto, com o que muda, quando, para quem e a quem recorrer.
+tom_padrao: cordial e direto
+campos:
+  - id: numero
+    rotulo: Número do comunicado
+    tipo: texto
+    exemplo: CI 012/2026
+  - id: para
+    rotulo: Para
+    tipo: texto
+    obrigatorio: true
+    exemplo: Todos os colaboradores
+  - id: de
+    rotulo: De (setor / remetente)
+    tipo: texto
+    exemplo: Administrativo
+  - id: assunto
+    rotulo: Assunto
+    tipo: texto
+    obrigatorio: true
+  - id: mensagem
+    rotulo: O que precisa ser comunicado
+    tipo: texto_longo
+    obrigatorio: true
+  - id: vigencia
+    rotulo: A partir de quando vale
+    tipo: texto
+  - id: contato
+    rotulo: Contato para dúvidas
+    tipo: texto
+  - id: urgencia
+    rotulo: Prioridade
+    tipo: selecao
+    opcoes: [Normal, Importante, Urgente]
+    padrao: Normal
+estrutura:
+  - Cabeçalho (número, data, para, de, assunto)
+  - Mensagem principal (o quê e por quê)
+  - O que muda / o que fazer (lista)
+  - Prazos e vigência
+  - Contato para dúvidas
+  - Assinatura
+instrucoes: |
+  - Primeiro parágrafo responde: o que está acontecendo e por quê, em até 3 linhas.
+  - Use lista para ações esperadas dos leitores.
+  - Se a prioridade for Importante ou Urgente, abra com um bloco 'destaque'.
+  - Linguagem simples, frases curtas, sem jargão; o texto deve caber em uma página.
+  - Feche com assinatura do remetente.
