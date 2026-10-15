@@ -47,6 +47,7 @@ O **DocAgent** separa as duas coisas:
 | 📤 **3 formatos** | Word (.docx) editável, PDF pronto para envio e Markdown, com cabeçalho, logo e numeração de páginas. |
 | 🏢 **Qualquer organização** | Perfil da organização (nome, CNPJ, endereço, logo, responsável) salvo e recarregado em JSON. |
 | 🧩 **Extensível sem código** | Um novo tipo de documento é só um arquivo `.yaml`. |
+| 🤖 **Também dentro do Claude** | Versão *Skill*: o próprio Claude redige e exporta, sem chave de API. |
 | 🧪 **Modo demonstração** | Sem chave de API, o app funciona montando o documento a partir dos campos, ideal para testar. |
 
 ### Documentos incluídos
@@ -89,8 +90,9 @@ agente-documentos-ia/
 │   ├── config.py               # variáveis de ambiente
 │   ├── templates/*.yaml        # um arquivo por tipo de documento
 │   └── renderers/              # markdown.py · docx.py · pdf.py · tema.py
-├── tests/                      # 80 testes (agente, SDK simulado, exportação, app, exemplos)
-├── scripts/exportar_exemplos.py
+├── tests/                      # 86 testes (agente, SDK simulado, exportação, app, exemplos)
+├── skill/docagent/             # versão Skill para usar dentro do Claude
+├── scripts/                    # empacotar_skill.py · exportar_exemplos.py
 └── exemplos/                   # entrada → prompt → resposta → DOCX/PDF/MD
 ```
 
@@ -126,6 +128,25 @@ Abra `http://localhost:8501`. Sem chave, o app abre em **modo demonstração**; 
 1. Faça o fork/push deste repositório.
 2. Em [share.streamlit.io](https://share.streamlit.io), crie um app apontando para `app.py`.
 3. Em **Settings → Secrets**, adicione `ANTHROPIC_API_KEY = "sk-ant-..."`.
+
+## Usar dentro do Claude (Skill)
+
+O DocAgent também roda **dentro do Claude** como uma [Skill](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills). Nesse modo não há chave de API nem servidor: o próprio Claude faz a redação, guiado pelos mesmos modelos YAML e regras do app, e usa os mesmos exportadores para gerar o Word/PDF.
+
+```bash
+python scripts/empacotar_skill.py      # gera dist/docagent.zip
+```
+
+| Onde | Como instalar |
+|---|---|
+| **claude.ai / app desktop / Cowork** | *Personalizar → Skills* → enviar `dist/docagent.zip` e ativar (requer execução de código habilitada). |
+| **Claude Code** | Descompactar em `~/.claude/skills/` (pessoal) ou `.claude/skills/` (no projeto). |
+
+Depois é só pedir em linguagem natural, por exemplo:
+
+> *"Faça um ofício para a Secretaria de Esportes pedindo o ginásio no dia 20/11 para um bazar beneficente. Assina João Lima, diretor administrativo."*
+
+O Claude identifica o modelo, pergunta só o que for indispensável, redige, exporta e lista as pendências. O ZIP é montado a partir do código de `src/` (sem duplicação), e `tests/test_skill.py` instala e executa a skill em uma pasta limpa a cada teste.
 
 ## Criando um novo tipo de documento
 
@@ -195,7 +216,7 @@ open("comunicado.docx", "wb").write(exportar(resultado.documento, org, "docx"))
 
 ```bash
 pip install -e ".[dev]"
-pytest          # 80 testes, nenhum chama a API (cliente falso)
+pytest          # 86 testes, nenhum chama a API (cliente falso)
 ruff check .
 ```
 

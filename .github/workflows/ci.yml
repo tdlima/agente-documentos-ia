@@ -24,3 +24,11 @@ jobs:
         run: ruff check . && ruff format --check .
       - name: Testes
         run: pytest -q
+      - name: Empacotar a skill
+        if: matrix.python-version == '3.12'
+        run: python scripts/empacotar_skill.py
+      - uses: actions/upload-artifact@v4
+        if: matrix.python-version == '3.12'
+        with:
+          name: docagent-skill
+          path: dist/docagent.zip
