@@ -15,7 +15,14 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from docagent.agent import AgenteClaude, AgenteDemo, ErroAgente, Resultado  # noqa: E402
+from docagent.agent import (  # noqa: E402
+    AgenteChat,
+    ErroAgente,
+    ErroRespostaChat,
+    PedidoChat,
+    Resultado,
+    criar_agente,
+)
 from docagent.config import MODELOS_DISPONIVEIS, Config, carregar_config  # noqa: E402
 from docagent.models import Campo, ModeloDocumento, Organizacao, Solicitacao  # noqa: E402
 from docagent.registry import carregar_modelos  # noqa: E402
@@ -60,24 +67,39 @@ def barra_lateral() -> tuple[Config, Organizacao]:
     base = carregar_config()
     with st.sidebar:
         st.markdown("## ⚙️ Configuração")
-        chave = st.text_input(
-            "Chave da API Anthropic",
-            type="password",
-            value="",
-            placeholder="Usando ANTHROPIC_API_KEY" if base.api_key else "sk-ant-...",
-            help="Opcional se a variável ANTHROPIC_API_KEY já estiver definida. "
-            "A chave fica apenas nesta sessão.",
+        modo_chat = st.toggle(
+            "Usar o chat do Claude (copiar e colar)",
+            key="modo_chat",
+            help="Sem API: o app gera o prompt para você colar no claude.ai e lê a resposta colada de volta.",
         )
-        modelos = list(MODELOS_DISPONIVEIS)
-        indice = modelos.index(base.modelo) if base.modelo in modelos else 0
-        modelo = st.selectbox("Modelo", modelos, index=indice, format_func=lambda m: MODELOS_DISPONIVEIS[m])
-        config = Config(api_key=chave or base.api_key, modelo=modelo, max_tokens=base.max_tokens)
-        if config.modo_demo:
+        if modo_chat:
+            config = Config(api_key=None, modelo=base.modelo, max_tokens=base.max_tokens, modo_chat=True)
             st.info(
-                "**Modo demonstração** — sem chave de API, o documento é montado a partir dos campos, sem IA."
+                "**Modo chat** — copie o prompt gerado, cole em uma conversa no claude.ai "
+                "e cole a resposta aqui. Use a mesma conversa para os ajustes."
             )
         else:
-            st.success("Claude conectado ✓")
+            chave = st.text_input(
+                "Chave da API Anthropic",
+                type="password",
+                value="",
+                placeholder="Usando ANTHROPIC_API_KEY" if base.api_key else "sk-ant-...",
+                help="Opcional se a variável ANTHROPIC_API_KEY já estiver definida. "
+                "A chave fica apenas nesta sessão.",
+            )
+            modelos = list(MODELOS_DISPONIVEIS)
+            indice = modelos.index(base.modelo) if base.modelo in modelos else 0
+            modelo = st.selectbox(
+                "Modelo", modelos, index=indice, format_func=lambda m: MODELOS_DISPONIVEIS[m]
+            )
+            config = Config(api_key=chave or base.api_key, modelo=modelo, max_tokens=base.max_tokens)
+            if config.modo_demo:
+                st.info(
+                    "**Modo demonstração** — sem chave de API, o documento é montado a partir dos "
+                    "campos, sem IA. Ou ative o chat do Claude acima."
+                )
+            else:
+                st.success("Claude conectado ✓")
 
         st.markdown("## 🏢 Sua organização")
         st.caption("Usado no cabeçalho dos arquivos e no contexto do agente.")
@@ -163,8 +185,45 @@ def formulario(modelo: ModeloDocumento) -> tuple[dict[str, str], str, str, bool]
 # ---------------------------------------------------------------------------
 
 
-def criar_agente(config: Config) -> AgenteClaude | AgenteDemo:
-    return AgenteDemo() if config.modo_demo else AgenteClaude(config)
+def painel_chat(pedido: PedidoChat) -> None:
+    """Copiar o prompt para o claude.ai e colar a resposta de volta."""
+    with st.container(border=True):
+        ajuste = pedido.versao > 1
+        st.markdown("### 💬 " + ("Ajuste pelo chat do Claude" if ajuste else "Redigir pelo chat do Claude"))
+        st.markdown(
+            "**1.** Copie o texto abaixo (ícone no canto do quadro) e cole "
+            + ("na mesma conversa do claude.ai." if ajuste else "em uma conversa nova do claude.ai.")
+        )
+        st.code(pedido.prompt, language="markdown", height=260, wrap_lines=True)
+        st.link_button("Abrir o claude.ai ↗", "https://claude.ai/new")
+
+        st.markdown("**2.** Cole aqui a resposta do Claude (o bloco JSON).")
+        with st.form(f"resposta_chat_{pedido.versao}"):
+            resposta = st.text_area(
+                "Resposta do Claude",
+                key=f"resposta_chat_{pedido.versao}",
+                height=180,
+                label_visibility="collapsed",
+                placeholder='```json\n{"titulo": ...}\n```',
+            )
+            col_ok, col_cancelar = st.columns([3, 2])
+            enviado = col_ok.form_submit_button("📥 Ler resposta", type="primary", width="stretch")
+            cancelado = col_cancelar.form_submit_button("Cancelar", width="stretch")
+
+    if cancelado:
+        st.session_state.pedido_chat = None
+        st.rerun()
+    if enviado:
+        try:
+            st.session_state.resultado = AgenteChat().concluir(pedido, resposta)
+            st.session_state.pedido_chat = None
+            st.rerun()
+        except ErroRespostaChat as exc:
+            st.error(str(exc))
+            st.markdown("Cole esta mensagem na mesma conversa para o Claude corrigir:")
+            st.code(exc.correcao, language="markdown", wrap_lines=True)
+        except ErroAgente as exc:
+            st.error(str(exc))
 
 
 def mostrar_resultado(resultado: Resultado, org: Organizacao, config: Config) -> None:
@@ -218,8 +277,12 @@ def mostrar_resultado(resultado: Resultado, org: Organizacao, config: Config) ->
         )
         if st.form_submit_button("🔁 Aplicar ajuste", width="stretch"):
             try:
-                with st.spinner("O agente está revisando o documento..."):
-                    st.session_state.resultado = criar_agente(config).refinar(resultado, pedido)
+                agente = criar_agente(config)
+                if isinstance(agente, AgenteChat):
+                    st.session_state.pedido_chat = agente.preparar_refinamento(resultado, pedido)
+                else:
+                    with st.spinner("O agente está revisando o documento..."):
+                        st.session_state.resultado = agente.refinar(resultado, pedido)
                 st.rerun()
             except ErroAgente as exc:
                 st.error(str(exc))
@@ -252,6 +315,7 @@ def main() -> None:
     if st.session_state.get("modelo_atual") != modelo.id:
         st.session_state.modelo_atual = modelo.id
         st.session_state.resultado = None
+        st.session_state.pedido_chat = None
 
     st.caption(f"**{modelo.nome}** · {modelo.categoria} — {modelo.descricao}")
 
@@ -263,14 +327,25 @@ def main() -> None:
                 modelo=modelo, valores=valores, organizacao=org, tom=tom, instrucoes_extras=extras
             )
             try:
-                with st.spinner("O agente está redigindo seu documento..."):
-                    st.session_state.resultado = criar_agente(config).redigir(solicitacao)
+                agente = criar_agente(config)
+                if isinstance(agente, AgenteChat):
+                    st.session_state.pedido_chat = agente.preparar(solicitacao)
+                    st.session_state.resultado = None
+                else:
+                    with st.spinner("O agente está redigindo seu documento..."):
+                        st.session_state.resultado = agente.redigir(solicitacao)
+                    st.session_state.pedido_chat = None
             except ErroAgente as exc:
                 st.error(str(exc))
 
     with direita:
         resultado: Resultado | None = st.session_state.get("resultado")
-        if resultado is None:
+        pedido: PedidoChat | None = st.session_state.get("pedido_chat") if config.modo_chat else None
+        if pedido is not None:
+            painel_chat(pedido)
+        if resultado is not None:
+            mostrar_resultado(resultado, org, config)
+        elif pedido is None:
             with st.container(border=True):
                 st.markdown("#### Como funciona")
                 st.markdown(
@@ -281,8 +356,6 @@ def main() -> None:
                 )
                 st.markdown("**Estrutura que será seguida:**")
                 st.markdown("\n".join(f"- {s}" for s in modelo.estrutura))
-        else:
-            mostrar_resultado(resultado, org, config)
 
 
 main()

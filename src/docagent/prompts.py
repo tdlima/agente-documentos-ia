@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from .models import Solicitacao
+import json
+
+from .models import Documento, Solicitacao
 from .utils import data_por_extenso
 
 SISTEMA = """\
@@ -65,4 +67,58 @@ def montar_refinamento(instrucao: str) -> str:
         "Revise o documento acima aplicando a seguinte solicitação, mantendo "
         "tudo o que não foi pedido para mudar e as mesmas regras de antes:\n\n"
         f"{instrucao.strip()}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Modo chat: prompts para colar no chat do Claude (sem API)
+# ---------------------------------------------------------------------------
+# Sem structured outputs, o formato da resposta vai escrito no próprio prompt,
+# junto com o schema JSON de `Documento`.
+
+LEMBRETE_FORMATO_CHAT = (
+    "Responda apenas com o JSON completo do documento, em um único bloco de código "
+    "```json, sem texto antes ou depois. Não gere arquivos nem use ferramentas ou skills."
+)
+
+
+def formato_resposta_chat() -> str:
+    schema = json.dumps(Documento.model_json_schema(), ensure_ascii=False, indent=2)
+    return (
+        "# Formato da resposta\n"
+        f"{LEMBRETE_FORMATO_CHAT}\n"
+        "O JSON deve seguir exatamente o schema abaixo. Todos os campos são obrigatórios; "
+        'use "" ou [] quando não se aplicarem.\n\n'
+        f"```json\n{schema}\n```"
+    )
+
+
+def montar_prompt_chat(s: Solicitacao) -> str:
+    """Primeira mensagem do modo chat: regras do sistema + formato + pedido."""
+    return "\n\n".join(
+        [
+            f"# Suas instruções\n{SISTEMA.strip()}",
+            formato_resposta_chat(),
+            montar_pedido(s),
+        ]
+    )
+
+
+def montar_refinamento_chat(doc: Documento, instrucao: str) -> str:
+    """Pedido de ajuste do modo chat; traz o documento atual para não depender do histórico."""
+    return (
+        "Documento atual:\n\n"
+        f"```json\n{doc.model_dump_json(indent=2)}\n```\n\n"
+        f"{montar_refinamento(instrucao)}\n\n"
+        f"{LEMBRETE_FORMATO_CHAT}"
+    )
+
+
+def montar_correcao_chat(erros: str) -> str:
+    """Mensagem para pedir ao chat que corrija uma resposta que não passou na validação."""
+    return (
+        "Sua resposta não pôde ser lida como o JSON do documento. Problemas encontrados:\n\n"
+        f"{erros}\n\n"
+        "Envie novamente o documento completo, corrigido. "
+        f"{LEMBRETE_FORMATO_CHAT}"
     )

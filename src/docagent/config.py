@@ -26,10 +26,11 @@ class Config:
     api_key: str | None
     modelo: str
     max_tokens: int
+    modo_chat: bool = False  # copiar e colar no chat do Claude, sem API
 
     @property
     def modo_demo(self) -> bool:
-        return not self.api_key
+        return not self.api_key and not self.modo_chat
 
 
 def carregar_config() -> Config:

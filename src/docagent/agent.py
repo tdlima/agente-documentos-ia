@@ -11,16 +11,30 @@ documento em várias rodadas ("deixe mais curto", "inclua uma tabela"...).
 
 Sem `ANTHROPIC_API_KEY`, o `AgenteDemo` monta um documento a partir dos
 campos preenchidos, para que o projeto possa ser testado sem custo.
+
+O `AgenteChat` troca a API pelo chat do Claude: gera o prompt para copiar e
+colar no claude.ai e valida a resposta colada de volta, reaproveitando o
+mesmo prompt, schema e renderizadores.
 """
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
+from pydantic import ValidationError
+
 from .config import Config, carregar_config
 from .models import Bloco, Documento, Metadado, Solicitacao
-from .prompts import SISTEMA, montar_pedido, montar_refinamento
+from .prompts import (
+    SISTEMA,
+    montar_correcao_chat,
+    montar_pedido,
+    montar_prompt_chat,
+    montar_refinamento,
+    montar_refinamento_chat,
+)
 from .utils import data_por_extenso
 
 
@@ -209,11 +223,103 @@ def _bloco(tipo: str, texto: str = "", itens: list[str] | None = None) -> Bloco:
 
 
 # ---------------------------------------------------------------------------
+# Agente via chat do Claude (copiar e colar, sem API)
+# ---------------------------------------------------------------------------
+
+
+class ErroRespostaChat(ErroAgente):
+    """Resposta colada que não virou um `Documento`; `correcao` é o texto para pedir o ajuste no chat."""
+
+    def __init__(self, mensagem: str, correcao: str):
+        super().__init__(mensagem)
+        self.correcao = correcao
+
+
+@dataclass
+class PedidoChat:
+    """Prompt aguardando a resposta do chat do Claude."""
+
+    prompt: str
+    solicitacao: Solicitacao
+    historico: list[dict[str, Any]]
+    versao: int = 1
+
+
+class AgenteChat:
+    """Mesmo fluxo do `AgenteClaude`, com o chat do Claude no lugar da API.
+
+    Em duas etapas: `preparar` (ou `preparar_refinamento`) gera o texto a colar
+    no chat; `concluir` valida a resposta colada contra `Documento`.
+    """
+
+    def preparar(self, solicitacao: Solicitacao) -> PedidoChat:
+        faltando = solicitacao.modelo.campos_obrigatorios_faltando(solicitacao.valores)
+        if faltando:
+            raise ErroAgente("Preencha os campos obrigatórios: " + ", ".join(faltando))
+        prompt = montar_prompt_chat(solicitacao)
+        return PedidoChat(
+            prompt=prompt,
+            solicitacao=solicitacao,
+            historico=[{"role": "user", "content": prompt}],
+        )
+
+    def preparar_refinamento(self, resultado: Resultado, instrucao: str) -> PedidoChat:
+        if not instrucao.strip():
+            raise ErroAgente("Descreva o que deseja ajustar no documento.")
+        prompt = montar_refinamento_chat(resultado.documento, instrucao)
+        return PedidoChat(
+            prompt=prompt,
+            solicitacao=resultado.solicitacao,
+            historico=resultado.historico + [{"role": "user", "content": prompt}],
+            versao=resultado.versao + 1,
+        )
+
+    def concluir(self, pedido: PedidoChat, resposta: str) -> Resultado:
+        documento = interpretar_resposta_chat(resposta)
+        return Resultado(
+            documento=documento,
+            solicitacao=pedido.solicitacao,
+            historico=pedido.historico + [AgenteClaude._como_mensagem(documento)],
+            versao=pedido.versao,
+        )
+
+
+def interpretar_resposta_chat(resposta: str) -> Documento:
+    """Extrai o JSON da resposta colada (com ou sem bloco ```json) e valida contra `Documento`."""
+    texto = resposta.strip()
+    if not texto:
+        raise ErroAgente("Cole a resposta do Claude antes de continuar.")
+
+    cerca = re.search(r"```(?:json)?\s*\n(.*?)```", texto, re.S)
+    if cerca:
+        texto = cerca.group(1)
+    inicio, fim = texto.find("{"), texto.rfind("}")
+    if inicio == -1 or fim < inicio:
+        raise ErroRespostaChat(
+            "Não encontrei um JSON na resposta colada.",
+            montar_correcao_chat("- A resposta não contém um objeto JSON."),
+        )
+
+    try:
+        return Documento.model_validate_json(texto[inicio : fim + 1])
+    except ValidationError as exc:
+        erros = [f"- {'.'.join(str(p) for p in e['loc']) or '(raiz)'}: {e['msg']}" for e in exc.errors()[:8]]
+        if exc.error_count() > 8:
+            erros.append(f"- ... e mais {exc.error_count() - 8} problema(s).")
+        raise ErroRespostaChat(
+            f"A resposta colada não segue o formato do documento ({exc.error_count()} problema(s)).",
+            montar_correcao_chat("\n".join(erros)),
+        ) from exc
+
+
+# ---------------------------------------------------------------------------
 # Fábrica
 # ---------------------------------------------------------------------------
 
 
-def criar_agente(config: Config | None = None) -> AgenteClaude | AgenteDemo:
-    """Retorna o agente Claude se houver chave de API; senão, o de demonstração."""
+def criar_agente(config: Config | None = None) -> AgenteClaude | AgenteDemo | AgenteChat:
+    """Agente do chat se `modo_chat`; senão, Claude se houver chave de API; senão, demonstração."""
     config = config or carregar_config()
+    if config.modo_chat:
+        return AgenteChat()
     return AgenteDemo() if config.modo_demo else AgenteClaude(config)
