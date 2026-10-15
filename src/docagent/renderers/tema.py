@@ -32,10 +32,18 @@ def sem_marcacao(texto: str) -> str:
     return _NEGRITO.sub(r"\1", texto)
 
 
+_MOEDA = re.compile(r"(R\$|US\$|€)\s+(?=[\d−-])")
+
+
+def nao_quebrar(texto: str) -> str:
+    """Impede a quebra de linha entre o símbolo da moeda e o valor (R$ 1.000)."""
+    return _MOEDA.sub(lambda m: m.group(1) + "\u00a0", texto)
+
+
 def normalizar_tabela(colunas: list[str], linhas: list[list[str]]) -> list[list[str]]:
     """Garante que todas as linhas tenham o mesmo número de células do cabeçalho."""
     n = len(colunas) or max((len(linha) for linha in linhas), default=0)
-    return [(list(linha) + [""] * n)[:n] for linha in linhas]
+    return [[nao_quebrar(c) for c in (list(linha) + [""] * n)[:n]] for linha in linhas]
 
 
 def larguras_colunas(
@@ -61,7 +69,7 @@ def larguras_colunas(
         celulas = [linha[i] for linha in linhas if i < len(linha)]
         media = sum(len(c) for c in celulas) / len(celulas) if celulas else 0
         preferidas.append(min(max(len(cab), media), 45) + 3)
-        palavras = [(p, True) for p in cab.split()] + [(p, False) for c in celulas for p in c.split()]
+        palavras = [(p, True) for p in cab.split(" ")] + [(p, False) for c in celulas for p in c.split(" ")]
         minimos.append(max((medir(p, b) for p, b in palavras), default=0) + padding)
 
     if sum(minimos) >= total:  # conteúdo muito largo: divide proporcionalmente aos mínimos

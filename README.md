@@ -32,8 +32,8 @@ O **DocAgent** separa as duas coisas:
 - **O agente** (Claude, da Anthropic) une os dois e redige o documento completo, sem inventar dados, e aponta o que precisa ser conferido antes do uso.
 
 <div align="center">
-<img src="docs/exemplos_documentos.png" alt="Exemplos de Ofício e PDI exportados em PDF" width="820">
-<br><sub>Exemplos de exportação em PDF (<a href="exemplos/">arquivos completos em /exemplos</a>)</sub>
+<img src="docs/exemplos_documentos.png" alt="Ofício, Relatório e Roteiro de Entrevista exportados em PDF" width="900">
+<br><sub>Ofício, Relatório e Roteiro de Entrevista exportados em PDF (<a href="exemplos/">entrada, prompt, resposta e arquivos em /exemplos</a>)</sub>
 </div>
 
 ## Funcionalidades
@@ -89,8 +89,9 @@ agente-documentos-ia/
 │   ├── config.py               # variáveis de ambiente
 │   ├── templates/*.yaml        # um arquivo por tipo de documento
 │   └── renderers/              # markdown.py · docx.py · pdf.py · tema.py
-├── tests/                      # 59 testes (agente com cliente falso, exportação, app)
-└── exemplos/                   # saídas de exemplo em JSON, DOCX e PDF
+├── tests/                      # 80 testes (agente, SDK simulado, exportação, app, exemplos)
+├── scripts/exportar_exemplos.py
+└── exemplos/                   # entrada → prompt → resposta → DOCX/PDF/MD
 ```
 
 ## Como executar
@@ -155,6 +156,20 @@ instrucoes: |
   - Validade padrão de 15 dias, se não informada.
 ```
 
+## Exemplos de ponta a ponta
+
+A pasta [`exemplos/`](exemplos/) mostra o caminho completo de três documentos, a partir de anotações informais como as que um usuário digitaria:
+
+| Arquivo | Conteúdo |
+|---|---|
+| `entrada.json` | O que foi preenchido no formulário (ex.: *"pedir o ginasio municipal dia 20/11..."*) |
+| `prompt.md` | O pedido exato que o agente envia ao modelo |
+| `resposta.json` | A resposta estruturada (schema `Documento`) |
+| `resposta_refinada.json` | (Ofício) a versão após um pedido de ajuste |
+| `.docx` · `.pdf` · `.md` | Os arquivos exportados |
+
+> As respostas foram redigidas pelo Claude a partir dos prompts reais do agente, e os testes garantem que `prompt.md` continua idêntico ao que o código gera. Para regenerar os arquivos: `python scripts/exportar_exemplos.py`.
+
 ## Uso como biblioteca
 
 ```python
@@ -180,7 +195,7 @@ open("comunicado.docx", "wb").write(exportar(resultado.documento, org, "docx"))
 
 ```bash
 pip install -e ".[dev]"
-pytest          # 59 testes, nenhum chama a API (cliente falso)
+pytest          # 80 testes, nenhum chama a API (cliente falso)
 ruff check .
 ```
 

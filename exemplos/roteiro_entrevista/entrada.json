@@ -1,0 +1,12 @@
+{
+  "modelo": "roteiro_entrevista",
+  "valores": {
+    "vaga": "Assistente Administrativo",
+    "area": "Administrativo / Financeiro",
+    "nivel": "Júnior",
+    "atividades": "lançar contas a pagar e receber, conferir notas fiscais, atender fornecedores por telefone e email, organizar arquivo, apoiar o fechamento do mês em planilhas",
+    "competencias": "Organização\nAtenção a detalhes\nComunicação\nExcel intermediário",
+    "duracao": "45",
+    "valores": "transparência, respeito às pessoas, compromisso com resultado"
+  }
+}

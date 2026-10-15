@@ -1,0 +1,14 @@
+{
+  "modelo": "oficio",
+  "valores": {
+    "numero": "045/2026/ADM",
+    "destinatario_nome": "Maria Souza",
+    "destinatario_cargo": "Secretária Municipal de Esportes",
+    "destinatario_orgao": "Prefeitura Municipal de Montes Claros",
+    "destinatario_endereco": "",
+    "hierarquia": "Autoridade superior",
+    "assunto": "Cessão do Ginásio Municipal para bazar beneficente",
+    "conteudo": "pedir o ginasio municipal dia 20/11 das 8h as 17h pra bazar beneficente. renda vai pro projeto de qualificação de jovens. publico uns 300. a gente cuida da limpeza e segurança. precisamos de resposta ate 05/11 pra divulgar",
+    "anexos": "Plano de segurança do evento\nTermo de responsabilidade pela limpeza"
+  }
+}

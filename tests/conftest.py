@@ -23,6 +23,7 @@ def org() -> Organizacao:
     )
 
 
-@pytest.fixture(params=["pdi_exemplo.json", "oficio_exemplo.json"])
+@pytest.fixture(params=["oficio", "relatorio", "roteiro_entrevista"])
 def documento(request) -> Documento:
-    return Documento.model_validate(json.loads((EXEMPLOS / request.param).read_text("utf-8")))
+    arquivo = EXEMPLOS / request.param / "resposta.json"
+    return Documento.model_validate(json.loads(arquivo.read_text("utf-8")))

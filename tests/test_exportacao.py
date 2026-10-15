@@ -104,3 +104,11 @@ def test_agrupar_assinaturas():
     grupos = list(agrupar_assinaturas([b("paragrafo"), b("assinatura"), b("assinatura"), b("lista")]))
     assert [type(g).__name__ for g in grupos] == ["Bloco", "list", "Bloco"]
     assert len(grupos[1]) == 2
+
+
+def test_moeda_nao_quebra_em_tabelas():
+    from docagent.renderers.tema import nao_quebrar, normalizar_tabela
+
+    assert nao_quebrar("R$ 18.300") == "R$\u00a018.300"
+    assert nao_quebrar("+R$ 2.150 e R$ −7") == "+R$\u00a02.150 e R$\u00a0−7"
+    assert normalizar_tabela(["A"], [["R$ 10"]]) == [["R$\u00a010"]]

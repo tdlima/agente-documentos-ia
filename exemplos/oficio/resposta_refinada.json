@@ -1,0 +1,104 @@
+{
+  "titulo": "Ofício nº 045/2026/ADM",
+  "subtitulo": "",
+  "metadados": [
+    {
+      "rotulo": "Local e data",
+      "valor": "Montes Claros, 15 de outubro de 2026."
+    },
+    {
+      "rotulo": "À Senhora",
+      "valor": "Maria Souza"
+    },
+    {
+      "rotulo": "Cargo",
+      "valor": "Secretária Municipal de Esportes"
+    },
+    {
+      "rotulo": "Órgão",
+      "valor": "Prefeitura Municipal de Montes Claros"
+    },
+    {
+      "rotulo": "Endereço",
+      "valor": "Rua Coronel Prates, 300 – Centro, Montes Claros/MG"
+    },
+    {
+      "rotulo": "Assunto",
+      "valor": "Cessão do Ginásio Municipal para bazar beneficente."
+    }
+  ],
+  "blocos": [
+    {
+      "tipo": "paragrafo",
+      "texto": "Senhora Secretária,",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "paragrafo",
+      "texto": "1. A Empresa Exemplo Ltda. solicita a cessão do Ginásio Municipal no dia **20 de novembro de 2026, das 8h às 17h**, para a realização de bazar beneficente cuja renda será integralmente destinada ao projeto de qualificação de jovens.",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "paragrafo",
+      "texto": "2. O evento terá **entrada gratuita** e estima-se a participação de aproximadamente 300 pessoas ao longo do dia. A organização responsabiliza-se pela limpeza do espaço ao término das atividades e pela segurança durante todo o período de uso, conforme documentos anexos.",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "paragrafo",
+      "texto": "3. Considerando a necessidade de divulgação prévia do evento, solicita-se, se possível, manifestação sobre o pedido até **5 de novembro de 2026**.",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "paragrafo",
+      "texto": "4. Colocamo-nos à disposição para quaisquer esclarecimentos que se fizerem necessários.",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "paragrafo",
+      "texto": "Respeitosamente,",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "assinatura",
+      "texto": "João Lima",
+      "itens": [
+        "Diretor Administrativo"
+      ],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "titulo",
+      "texto": "Anexos",
+      "itens": [],
+      "colunas": [],
+      "linhas": []
+    },
+    {
+      "tipo": "lista_numerada",
+      "texto": "",
+      "itens": [
+        "Plano de segurança do evento.",
+        "Termo de responsabilidade pela limpeza."
+      ],
+      "colunas": [],
+      "linhas": []
+    }
+  ],
+  "pendencias": [
+    "Confirmar se a renda será destinada integralmente ao projeto de qualificação de jovens, como redigido.",
+    "Verificar se há formulário ou protocolo próprio da Prefeitura para pedidos de cessão de espaço."
+  ]
+}

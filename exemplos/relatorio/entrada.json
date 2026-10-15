@@ -1,0 +1,13 @@
+{
+  "modelo": "relatorio",
+  "valores": {
+    "tipo_relatorio": "Relatório de resultados / indicadores",
+    "titulo": "Relatório de Resultados – 3º trimestre de 2026",
+    "periodo": "Julho a setembro de 2026",
+    "publico": "Diretoria",
+    "objetivo": "mostrar como foi o trimestre da central de atendimento e o que fazer no 4º tri",
+    "dados": "Julho: 412 clientes ativos, faturamento R$ 18.300, cancelamentos 25\nAgosto: 430 clientes, R$ 19.100, cancelamentos 22\nSetembro: 455 clientes, R$ 20.450, cancelamentos 18\nTempo médio de atendimento caiu de 6min40 para 5min10\nmeta do trimestre era chegar a 450 clientes",
+    "destaques": "em agosto entrou o novo script de retenção. em setembro 2 operadores de ferias, equipe reduzida. sistema de discagem caiu 2 dias em julho",
+    "autor": "Carlos Mendes"
+  }
+}
